@@ -18,7 +18,8 @@ class Fish : public cocos2d::CCObject
 {
 public:
     virtual ~Fish();
-    static Fish *createWithFishType(int fishType, GameLayer *gameLayer, cocos2d::CCSpriteBatchNode *pBatchNode);
+	//virtual Fish();
+    static Fish *createWithFishType(int fishType, GameLayer *gameLayer, cocos2d::CCSpriteBatchNode *pBatchNode, float ratio);
     CC_SYNTHESIZE(GameLayer *, m_pGameLayer, GameLayer);
     CC_SYNTHESIZE(cocos2d::CCSpriteBatchNode *, m_pBatchNode, BatchNode);
     CC_SYNTHESIZE(int, m_nFishType, FishType);
@@ -27,7 +28,9 @@ public:
     CC_SYNTHESIZE(cocos2d::CCParticleSystem *, m_pParticleBubble, ParticleBubble);
     void showCaught();
 private:
-    bool initWithFishType(int fishType, GameLayer *gameLayer, cocos2d::CCSpriteBatchNode *pBatchNode);
+	//int pathArray[][8];
+	float fishRatio;
+    bool initWithFishType(int fishType, GameLayer *gameLayer, cocos2d::CCSpriteBatchNode *pBatchNode, float ratio);
     void removeSelf();
     void getPath(cocos2d::CCMoveTo *&moveto);
     bool m_bParticleBubble;

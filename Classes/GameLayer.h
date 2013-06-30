@@ -12,7 +12,7 @@
 #include <iostream>
 #include "cocos2d.h"
 #include "GameConfig.h"
-//#include "Cannon.h"
+#include "Cannon.h"
 //#include "RollNum.h"
 
 class GameLayer : public cocos2d::CCLayer
@@ -22,11 +22,12 @@ public:
     GameLayer();
     virtual ~GameLayer();
     virtual bool init();
-    //virtual void ccTouchesBegan(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent);
-    //virtual void ccTouchesEnded(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent);
+    virtual void ccTouchesBegan(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent);
+    virtual void ccTouchesEnded(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent);
     
     // there's no 'id' in cpp, so we recommend to return the class instance pointer
     static cocos2d::CCScene* scene();
+	void menuCloseCallback(CCObject* pSender);
     
     // preprocessor macro for "static create()" constructor ( node() deprecated )
     CREATE_FUNC(GameLayer);
@@ -39,6 +40,8 @@ public:
     CC_SYNTHESIZE_RETAIN(cocos2d::CCArray *, m_pBullets, Bullets);
     //CC_SYNTHESIZE_RETAIN(Cannon *, m_pCannon, Cannon);
     //CC_SYNTHESIZE_RETAIN(RollNumGroup *, m_pRollNumGroup, RollNumGroup);
+	int level;
+	Cannon *cannon;
 	
 private:
 	
@@ -47,10 +50,10 @@ private:
     std::set<int> fishInBatchNode3;
     std::set<int> fishInBatchNode4;
     int m_nScore;
-	
+	float ratio;//´óÐ¡±ÈÀý
 	void initFishes();
     void initBackground();
-    //void initCannon();
+    void initCannon();
     void initFrames();
 	
     //void updateGame(cocos2d::CCTime dt);
