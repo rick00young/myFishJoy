@@ -170,9 +170,30 @@ void GameLayer::initCannon()
     this->setCannon(Cannon::createWithCannonType(7, this, pBatchNode));
     m_pCannon->setRotation(0.0f);
 	*/
+	CCSize size = CCDirector::sharedDirector()->getWinSize();
 
 	cannon = new Cannon(ratio);
 	this->addChild(cannon,101,220);
+
+	CCMenuItemFont *addLevel = CCMenuItemFont::create("+", this, menu_selector(Cannon::addLevel));
+	//addLevel->setPosition(ccp(30, -size.height/2 + 20));
+	addLevel->setPosition(ccp(size.width/2 + 35, 13));
+	//CCLog("%f ** %f", cannon->getCannonPosition().x,cannon->getCannonPosition().y);
+	//addLevel->setPosition(ccp(cannon->getCannonPosition().x + 20,cannon->getCannonPosition().y));
+	//CCMenu *menuAdd = CCMenu::create(addLevel, NULL);
+	//menuAdd->setPosition(ccp(size.width/2 + 20 + 8,20));
+	//menuAdd->setPosition(CCPointZero);
+	//this->addChild(menuAdd, 102);
+
+	CCMenuItemFont *reduceLevel = CCMenuItemFont::create("-", this, menu_selector(Cannon::addLevel));
+	//addLevel->setPosition(ccp(30, -size.height/2 + 20));
+	reduceLevel->setPosition(ccp(size.width/2 - 25, 13));
+	//CCLog("%f ** %f", cannon->getCannonPosition().x,cannon->getCannonPosition().y);
+	//addLevel->setPosition(ccp(cannon->getCannonPosition().x + 20,cannon->getCannonPosition().y));
+	CCMenu *menuAdd = CCMenu::create(addLevel,reduceLevel, NULL);
+	//menuAdd->setPosition(ccp(size.width/2 + 20 + 8,20));
+	menuAdd->setPosition(CCPointZero);
+	this->addChild(menuAdd, 102);
 }
 
 void GameLayer::addFish()
@@ -239,13 +260,14 @@ void GameLayer::ccTouchesBegan(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEven
 		if(pt.y < cannon->getCannonPosition().y + 50){
 			return;
 		}
-		CCLog("pt.y %f ** cannon.y %f", pt.y, cannon->getCannonPosition().y);
+		//CCLog("pt.y %f ** cannon.y %f", pt.y, cannon->getCannonPosition().y);
         cannon->rotateToPoint(pt);
         break;
 
 
 
 	}
+	CCLog("%f ** %f", cannon->getCannonPosition().x,cannon->getCannonPosition().y);
 	/*
 	CCTouch* touch = (CCTouch*)( pTouches->anyObject() );
 	CCPoint location = touch->getLocation();
