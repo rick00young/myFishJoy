@@ -42,6 +42,7 @@ bool GameLayer::init()
     {
         return false;
     }
+	levelCannon = 1;//大炮的等级
     //srand(time(NULL));
     this->setTouchEnabled(true);
     this->initFrames();
@@ -175,25 +176,21 @@ void GameLayer::initCannon()
 	cannon = new Cannon(ratio);
 	this->addChild(cannon,101,220);
 
-	CCMenuItemFont *addLevel = CCMenuItemFont::create("+", this, menu_selector(Cannon::addLevel));
-	//addLevel->setPosition(ccp(30, -size.height/2 + 20));
+	CCMenuItemImage *addLevel = CCMenuItemImage::create("addA.png", "addB.png", this, menu_selector(GameLayer::addCannon));
+	
 	addLevel->setPosition(ccp(size.width/2 + 35, 13));
-	//CCLog("%f ** %f", cannon->getCannonPosition().x,cannon->getCannonPosition().y);
-	//addLevel->setPosition(ccp(cannon->getCannonPosition().x + 20,cannon->getCannonPosition().y));
-	//CCMenu *menuAdd = CCMenu::create(addLevel, NULL);
-	//menuAdd->setPosition(ccp(size.width/2 + 20 + 8,20));
-	//menuAdd->setPosition(CCPointZero);
-	//this->addChild(menuAdd, 102);
 
-	CCMenuItemFont *reduceLevel = CCMenuItemFont::create("-", this, menu_selector(Cannon::addLevel));
+
+	CCMenuItemImage *reduceLevel = CCMenuItemImage::create("reduceA.png", "reduceB.png", this, menu_selector(GameLayer::reduceCannon));
 	//addLevel->setPosition(ccp(30, -size.height/2 + 20));
-	reduceLevel->setPosition(ccp(size.width/2 - 25, 13));
+	reduceLevel->setPosition(ccp(size.width/2 - 20, 13));
 	//CCLog("%f ** %f", cannon->getCannonPosition().x,cannon->getCannonPosition().y);
 	//addLevel->setPosition(ccp(cannon->getCannonPosition().x + 20,cannon->getCannonPosition().y));
 	CCMenu *menuAdd = CCMenu::create(addLevel,reduceLevel, NULL);
 	//menuAdd->setPosition(ccp(size.width/2 + 20 + 8,20));
 	menuAdd->setPosition(CCPointZero);
 	this->addChild(menuAdd, 102);
+
 }
 
 void GameLayer::addFish()
@@ -347,4 +344,27 @@ void GameLayer::updateGame(CCTime dt)
 void GameLayer::menuCloseCallback(CCObject* pSender)
 {
 	CCDirector::sharedDirector()->end();
+}
+
+void GameLayer::addCannon(CCObject* pSender)
+{
+	CCLog("addCannon");
+	
+	levelCannon++;
+	if(levelCannon > 7){
+		levelCannon = 1;
+	}
+
+	cannon->addLevel(levelCannon);
+}
+
+void GameLayer::reduceCannon(CCObject* pSender)
+{
+	CCLog("reduceCannon");
+
+	levelCannon--;
+	if(levelCannon < 1){
+		levelCannon = 7;
+	}
+	cannon->reduceLevel(levelCannon);
 }

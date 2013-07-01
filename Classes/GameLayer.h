@@ -40,8 +40,10 @@ public:
     CC_SYNTHESIZE_RETAIN(cocos2d::CCArray *, m_pBullets, Bullets);
     //CC_SYNTHESIZE_RETAIN(Cannon *, m_pCannon, Cannon);
     //CC_SYNTHESIZE_RETAIN(RollNumGroup *, m_pRollNumGroup, RollNumGroup);
-	int level;
+	int levelCannon;
 	Cannon *cannon;
+	void addCannon(cocos2d::CCObject *sender);
+	void reduceCannon(cocos2d::CCObject *sender);
 	
 private:
 	
