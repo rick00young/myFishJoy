@@ -17,7 +17,9 @@ public:
 	void setRotation(float);
 	void rotateToPoint(cocos2d::CCPoint pt);
 	cocos2d::CCPoint getCannonPosition(void);
+	void addLevel(int level);
+	void reduceLevel(int level);
+
 	CREATE_FUNC(Cannon);
 };
-
 #endif
