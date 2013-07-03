@@ -61,33 +61,77 @@ bool GameScene::init()
         // Add the menu to HelloWorld layer as a child layer.
         this->addChild(pMenu, 1);
 
-        // 2. Add a label shows "Hello World".
 
-        // Create a label and initialize with string "Hello World".
-        CCLabelTTF* pLabel = CCLabelTTF::create("Hello World", "Arial", 24);
-        CC_BREAK_IF(! pLabel);
 
         // Get window size and place the label upper. 
-        CCSize size = CCDirector::sharedDirector()->getWinSize();
-        pLabel->setPosition(ccp(size.width / 2, size.height - 50));
+		CCSize winSize = CCDirector::sharedDirector()->getWinSize();
 
-        // Add the label to HelloWorld layer as a child layer.
-        this->addChild(pLabel, 1);
+		ratio = winSize.width / 1024;//´óÐ¡±ÈÀý
 
-        // 3. Add add a splash screen, show the cocos2d splash image.
-        CCSprite* pSprite = CCSprite::create("HelloWorld.png");
-        CC_BREAK_IF(! pSprite);
 
-        // Place the sprite on the center of the screen
-        pSprite->setPosition(ccp(size.width/2, size.height/2));
-
-        // Add the sprite to HelloWorld layer as a child layer.
-        this->addChild(pSprite, 0);
-
+		this->initFrames();
+		this->initCannon();
+		this->initBackground();
         bRet = true;
     } while (0);
 
     return bRet;
+}
+
+void::GameScene::initFrames()
+{
+    CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("fish.plist");
+    CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("fish2.plist");
+    CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("fish3.plist");
+    CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("fish4.plist");
+    CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("cannon.plist");
+}
+
+void GameScene::initBackground()
+{
+	CCSize winSize = CCDirector::sharedDirector()->getWinSize();
+
+    CCTexture2D *texture = CCTextureCache::sharedTextureCache()->addImage("bj01.jpg");
+    CCSprite *pBackground = CCSprite::createWithTexture(texture);
+	pBackground->setScale(ratio);
+    pBackground->setAnchorPoint(ccp(0.5f, 0.5f));
+    
+    pBackground->setPosition(ccp(winSize.width/2, winSize.height/2));
+    this->addChild(pBackground);
+ 
+    texture = CCTextureCache::sharedTextureCache()->addImage("ui_box_01.png");
+    CCSprite *pTopBar = CCSprite::createWithTexture(texture);
+	pTopBar->setScale(ratio);
+    //pTopBar->setPosition(ccp(500, 700));
+	//pTopBar->setAnchorPoint(CCPointZero);
+	pTopBar->setPosition(ccp((winSize.width/2), (winSize.height - pTopBar->getContentSize().height/2*ratio)));
+    this->addChild(pTopBar, 100);
+    
+    texture = CCTextureCache::sharedTextureCache()->addImage("ui_box_02.png");
+    CCSprite *pBottomBar = CCSprite::createWithTexture(texture);
+	pBottomBar->setScale(ratio);
+    //pBottomBar->setPosition(ccp(440, 90));
+	pBottomBar->setPosition(ccp(pBottomBar->getContentSize().width/2*ratio, pBottomBar->getContentSize().height/2*ratio));
+    this->addChild(pBottomBar, 100);
+    
+    //this->setRollNumGroup(RollNumGroup::createWithGameLayer(this, 6));
+    //m_pRollNumGroup->setPosition(ccp(353, 21));
+}
+
+void GameScene::initCannon()
+{
+	CCLog("gae00000000 ");
+	CCTexture2D *pTexture = CCTextureCache::sharedTextureCache()->addImage("cannon.png");
+	CCSize size = CCDirector::sharedDirector()->getWinSize();
+
+
+	cannon = Cannon::initCannon();
+	cannon->setPosition(ccp(size.width/2 + 10, 20));
+	//CCMoveTo *moveto = CCMoveTo::create(1.0f, ccp(size.width, size.height));
+	//cannon->runAction(moveto);
+
+	this->addChild(cannon,101,220);
+
 }
 
 void GameScene::menuCloseCallback(CCObject* pSender)

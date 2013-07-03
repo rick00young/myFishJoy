@@ -1,26 +1,22 @@
-#ifndef __HELLOWORLD_SCENE_H__
-#define __HELLOWORLD_SCENE_H__
+#ifndef __Cannon_H__
+#define __Cannon_H__
 
 #include "cocos2d.h"
 
-#include "Box2D/Box2D.h"
-
-#include "SimpleAudioEngine.h"
-
-class Cannon : public cocos2d::CCLayer
+//#include "Box2D/Box2D.h"
+#define CANNON_PADDING 20.0f
+class Cannon : public cocos2d::CCNode
 {
 public:
-    // Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone
-    virtual bool init();  
-
-    // there's no 'id' in cpp, so we recommand to return the exactly class pointer
-    static cocos2d::CCScene* scene();
-    
-    // a selector callback
-    void menuCloseCallback(CCObject* pSender);
-
-    // implement the "static node()" method manually
-    CREATE_FUNC(Cannon);
+	~Cannon();
+	Cannon();
+	static Cannon* initCannon();
+	bool createCannon();
+	cocos2d::CCSprite * _sprite;
+	float ratio;
+	int levelCannon;
+	void addCannon(cocos2d::CCObject *sender);
+	void reduceCannon(cocos2d::CCObject *sender);
 };
 
 #endif  // __HELLOWORLD_SCENE_H__
