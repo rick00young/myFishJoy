@@ -7,14 +7,17 @@
 
 #include "SimpleAudioEngine.h"
 
-class GameScene : public cocos2d::CCScene
+class GameScene : public cocos2d::CCLayer
 {
 public:
     
     virtual bool init();
-
+	static cocos2d::CCScene* scene();
     void menuCloseCallback(CCObject* pSender);
 
+	virtual void ccTouchesBegan(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent);
+    virtual void ccTouchesEnded(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent);
+	CC_SYNTHESIZE(cocos2d::CCArray *, BulletArray, Bullet);
     // implement the "static node()" method manually
     CREATE_FUNC(GameScene);
 

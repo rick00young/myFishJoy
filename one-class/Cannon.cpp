@@ -100,3 +100,19 @@ void Cannon::reduceCannon(CCObject* pSender)
 	}
 }
 
+
+void Cannon::rotateToPoint(cocos2d::CCPoint ptTo)
+{
+    CCPoint ptFrom = this->getPosition();
+    float angle = atan2f(ptTo.y - ptFrom.y, ptTo.x - ptFrom.x) / M_PI * 180.0f;
+    _sprite->setRotation(90.0f - angle);
+    //this->setDirection(ptTo);
+}
+
+void Cannon::shoot()
+{
+	bullet = Bullet::initBullet();
+	if(bullet){
+		CCLog("shoot");
+	}
+}

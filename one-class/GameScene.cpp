@@ -2,8 +2,8 @@
 #include "GameScene.h"
 using namespace cocos2d;
 
-/*
-CCScene* HelloWorld::scene()
+
+CCScene* GameScene::scene()
 {
     CCScene * scene = NULL;
     do 
@@ -13,7 +13,7 @@ CCScene* HelloWorld::scene()
         CC_BREAK_IF(! scene);
 
         // 'layer' is an autorelease object
-        HelloWorld *layer = HelloWorld::create();
+        GameScene *layer = GameScene::create();
         CC_BREAK_IF(! layer);
 
         // add layer as a child to scene
@@ -23,7 +23,7 @@ CCScene* HelloWorld::scene()
     // return the scene
     return scene;
 }
-*/
+
 // on "init" you need to initialize your instance
 bool GameScene::init()
 {
@@ -34,7 +34,7 @@ bool GameScene::init()
         // super init first
         //////////////////////////////////////////////////////////////////////////
 
-        CC_BREAK_IF(! CCScene::init());
+        CC_BREAK_IF(! CCLayer::init());
 
         //////////////////////////////////////////////////////////////////////////
         // add your codes below...
@@ -68,7 +68,7 @@ bool GameScene::init()
 
 		ratio = winSize.width / 1024;//´óÐ¡±ÈÀý
 
-
+		this->setTouchEnabled(true);
 		this->initFrames();
 		this->initCannon();
 		this->initBackground();
@@ -121,6 +121,7 @@ void GameScene::initBackground()
 void GameScene::initCannon()
 {
 	CCLog("gae00000000 ");
+	//this->setFishes(CCArray::createWithCapacity(MAX_FISH_COUNT));  
 	CCTexture2D *pTexture = CCTextureCache::sharedTextureCache()->addImage("cannon.png");
 	CCSize size = CCDirector::sharedDirector()->getWinSize();
 
@@ -132,6 +133,61 @@ void GameScene::initCannon()
 
 	this->addChild(cannon,101,220);
 
+}
+
+void GameScene::ccTouchesBegan(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent)
+{
+	//CCLog("touch begin");
+	
+ 	CCSetIterator it = pTouches->begin();
+	for(; it != pTouches->end(); it++)
+    {
+		CCTouch *pTouch = (CCTouch*)*it;
+		CCPoint pt = CCDirector::sharedDirector()->convertToGL(pTouch->getLocationInView());
+		//CCLog("pt.y %f ** cannon.y %f", pt.y, cannon->getCannonPosition().y);
+		if(pt.y < cannon->getPosition().y + 50){
+			return;
+		}
+		//CCLog("pt.y %f ** cannon.y %f", pt.y, cannon->getPosition().y);
+        cannon->rotateToPoint(pt);
+        break;
+		
+
+
+	}
+	//CCLog("%f ** %f", cannon->getCannonPosition().x,cannon->getCannonPosition().y);
+	/*
+	CCTouch* touch = (CCTouch*)( pTouches->anyObject() );
+	CCPoint location = touch->getLocation();
+	location = CCDirector::sharedDirector()->convertToGL(location);
+
+	CCPoint cannonPos = cannon->getPosition();
+
+	//float angle = atan2f(location.y - cannonPos.y, location.x - cannonPos.x);
+	float angle = (location.y - cannonPos.y)/( location.x - cannonPos.x);
+    //float rotation = angle * 180.0f / M_PI;
+	float rotation = atanf(angle) / M_PI * 180.0f;
+
+	cannon->setRotation(rotation);
+
+	CCLog("%f****%f******%f", location.x, location.y, angle);
+	*/
+}
+
+void GameScene::ccTouchesEnded(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent)
+{	
+	CCLog("touch end");
+	cannon->shoot();
+	/*
+    CCSetIterator it = pTouches->begin();
+    while(it != pTouches->end())
+    {
+        //CCTouch *pTouch = (CCTouch *)*it;
+        //CCPoint pt = CCDirector::sharedDirector()->convertToGL(pTouch->getLocationInView());
+        m_pCannon->fire();
+        break;
+    }
+	*/
 }
 
 void GameScene::menuCloseCallback(CCObject* pSender)
