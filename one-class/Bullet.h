@@ -3,18 +3,25 @@
 
 #include "cocos2d.h"
 
+
 //#include "Box2D/Box2D.h"
 #define CANNON_PADDING 20.0f
+class GameScene;
+
 class Bullet : public cocos2d::CCSprite
 {
 public:
 	~Bullet();
 	Bullet();
-	static Bullet* initBullet();
-	bool createBullet();
+	static Bullet* initBullet(int level, GameScene *gameScene, cocos2d::CCSpriteBatchNode *pBatchNodeBullet);
+	bool createBullet(int level, GameScene *gameScene, cocos2d::CCSpriteBatchNode *pBatchNodeBullet);
+	CC_SYNTHESIZE(GameScene *, m_pgameScene, gameScene);
+
 	cocos2d::CCSprite * _spriteBullet;
 	float ratio;
-	int levelCannon;
+	int levelBullet;
+	void removeSelf();
+	void shoot(cocos2d::CCPoint startPosition, cocos2d::CCPoint endPosition, float angle);
 	//void addCannon(cocos2d::CCObject *sender);
 	//void reduceCannon(cocos2d::CCObject *sender);
 	//void rotateToPoint(cocos2d::CCPoint ptTo);

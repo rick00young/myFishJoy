@@ -85,7 +85,7 @@ void Cannon::reduceCannon(CCObject* pSender)
 	if(levelCannon < 1){
 		levelCannon = 6;
 	}
-	CCLog("levelCannon id %d", levelCannon);
+	//CCLog("levelCannon id %d", levelCannon);
 	//CCSize  size = CCDirector::sharedDirector()->getWinSize();
 	CCString *frameName = CCString::createWithFormat("actor_cannon1_%d1.png", levelCannon);
 	CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(frameName->getCString());
@@ -109,10 +109,20 @@ void Cannon::rotateToPoint(cocos2d::CCPoint ptTo)
     //this->setDirection(ptTo);
 }
 
+float Cannon::getAngle()
+{
+	return _sprite->getRotation();
+}
+
 void Cannon::shoot()
 {
-	bullet = Bullet::initBullet();
-	if(bullet){
-		CCLog("shoot");
-	}
+	//bullet = Bullet::initBullet();
+	//if(bullet){
+		//CCLog("shoot");
+	//}
+}
+
+int Cannon::getLevelCannon()
+{
+	return levelCannon;
 }

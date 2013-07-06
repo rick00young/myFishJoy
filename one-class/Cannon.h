@@ -18,6 +18,8 @@ public:
 	void addCannon(cocos2d::CCObject *sender);
 	void reduceCannon(cocos2d::CCObject *sender);
 	void rotateToPoint(cocos2d::CCPoint ptTo);
+	float getAngle();
+	int getLevelCannon();
 	Bullet *bullet;
 	void shoot();
 };
