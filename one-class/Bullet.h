@@ -19,6 +19,7 @@ public:
 
 	cocos2d::CCSprite * _spriteBullet;
 	float ratio;
+	//FishNet* fishNet;
 	int levelBullet;
 	void removeSelf();
 	void shoot(cocos2d::CCPoint startPosition, cocos2d::CCPoint endPosition, float angle);

@@ -1,6 +1,18 @@
 //#include "HelloWorldScene.h"
 #include "GameScene.h"
 using namespace cocos2d;
+using namespace std;
+/*
+const int FishInBatchNode1[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 13, 14};
+const int FishInBatchNode2[] = {10, 18};
+const int FishInBatchNode3[] = {16, 17};
+const int FishInBatchNode4[] = {11, 12};
+*/
+
+const int FishInBatchNode1[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 13, 14};
+const int FishInBatchNode2[] = {10, 18};
+const int FishInBatchNode3[] = {16, 17};
+const int FishInBatchNode4[] = {11, 12};
 
 
 CCScene* GameScene::scene()
@@ -73,6 +85,8 @@ bool GameScene::init()
 		this->initCannon();
 		this->initBackground();
 		this->initFishes();
+
+		this->schedule(schedule_selector(GameScene::updateFish), 1.0f);//¸üÐÂÓã
         bRet = true;
     } while (0);
 
@@ -124,6 +138,10 @@ void GameScene::initCannon()
 	CCLog("gae00000000 ");
 	this->setBullets(CCArray::createWithCapacity(100));
 	m_pBullets->retain();
+
+	this->setFishNets(CCArray::createWithCapacity(100));
+	m_pFishNets->retain();
+
 	//this->setFishes(CCArray::createWithCapacity(MAX_FISH_COUNT));  
 	CCTexture2D *pTexture = CCTextureCache::sharedTextureCache()->addImage("cannon.png");
 	CCSize size = CCDirector::sharedDirector()->getWinSize();
@@ -140,6 +158,10 @@ void GameScene::initCannon()
 }
 
 void GameScene::initFishes(){
+
+	this->setFishes(CCArray::createWithCapacity(MAX_FISH_COUNT));    
+	m_pFishes->retain();
+
 	CCTexture2D *texture = CCTextureCache::sharedTextureCache()->addImage("fish.png");
     this->setBatchNode1(CCSpriteBatchNode::createWithTexture(texture));
     this->addChild(m_pBatchNode1);
@@ -155,6 +177,8 @@ void GameScene::initFishes(){
     texture = CCTextureCache::sharedTextureCache()->addImage("fish4.png");
     this->setBatchNode4(CCSpriteBatchNode::createWithTexture(texture));
     this->addChild(m_pBatchNode4);
+
+	m_pFishes->removeAllObjects();
 }
 void GameScene::ccTouchesBegan(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent)
 {
@@ -187,7 +211,7 @@ void GameScene::ccTouchesEnded(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEven
 	int level = cannon->getLevelCannon();
 	bullet = Bullet::initBullet(level,this, m_pBatchNode2);
 	
-	CCLog("setbullets %d", this->getBullets()->count());
+	CCLog("bullets count is %d", this->getBullets()->count());
 	
     CCSetIterator it = pTouches->begin();
     while(it != pTouches->end() && isControl)
@@ -204,6 +228,61 @@ void GameScene::ccTouchesEnded(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEven
 	isControl = false;
 	
 }
+
+void GameScene::showFishNet(CCPoint point)
+{
+	//CCLog("show fish net");
+	int level = cannon->getLevelCannon();
+	fishNet = FishNet::initFishNet(level, this, m_pBatchNode3);
+	fishNet->showFishNet(point);
+}
+
+void GameScene::updateFish(float dt)
+{
+	CCLog("update fish");
+	if(m_pFishes->count() < MAX_FISH_COUNT)
+    {
+        int n = MAX_FISH_COUNT - m_pFishes->count();
+        int nAdd = rand() % n + 1;
+        for(int i = 0; i < nAdd; i++)
+        {
+            //this->addFish();
+			//CCLog("add fish");
+			fish = Fish::initFish(2, this, m_pBatchNode1);
+			//this->addFish();
+        }
+    }
+}
+
+void GameScene::addFish()
+{
+	 int type = rand() % 18 + 1;
+	 //int* ip = find(FishInBatchNode1, FishInBatchNode1 + LENGTH_ARRAY, 50);
+	 //std::set<int>::iterator it = fishInBatchNode1.find(type);FishInBatchNode1[LENGTH_ARRAY]
+	 //CCLog("it is %d", it);
+	 /*
+	 int node = type % 4;
+	 switch (node){
+		case 0:
+			int ;
+			Fish::initFish(type, this, m_pBatchNode1);
+			break;
+		case 1:
+			Fish::initFish(type, this, m_pBatchNode2);
+			break;
+		case 2:
+			Fish::initFish(type, this, m_pBatchNode3);
+			break;
+		case 3:
+			Fish::initFish(type, this, m_pBatchNode4);
+			break;
+		default:
+			break;
+	 }
+	 */
+}
+
+
 
 void GameScene::menuCloseCallback(CCObject* pSender)
 {

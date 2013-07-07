@@ -1,6 +1,7 @@
 #include "Bullet.h"
 #include "Math.h"
 
+
 #include "GameScene.h"
 
 using namespace cocos2d;
@@ -79,7 +80,7 @@ void Bullet::shoot(CCPoint startPosition, CCPoint endPosition, float angle)
 
 	
 	//CCLog("angle is %f", _angle);
-	CCMoveTo* moveto = CCMoveTo::create(levelBullet * 0.1f, realEnd);
+	CCMoveTo* moveto = CCMoveTo::create(levelBullet * 0.2f, realEnd);
 	CCFiniteTimeAction *releaseFunc = CCCallFunc::create(this, callfunc_selector(Bullet::removeSelf));
 	CCFiniteTimeAction *sequence = CCSequence::create(moveto,releaseFunc, NULL);
 	//CCString *bulletName = CCString::createWithFormat("bullet0%d.png", levelBullet);
@@ -90,7 +91,9 @@ void Bullet::shoot(CCPoint startPosition, CCPoint endPosition, float angle)
 
 void Bullet::removeSelf()
 {
-	CCLog("moved....");
+	//CCLog("moved....");
+	this->getgameScene()->showFishNet(_spriteBullet->getPosition());//Õ¹ÏÖÓãÍø
+
 	_spriteBullet->removeFromParentAndCleanup(true);
 	this->getgameScene()->getBullets()->removeObject(this);
 	

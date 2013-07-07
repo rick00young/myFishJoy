@@ -55,7 +55,7 @@ bool Cannon::createCannon()
 
 void Cannon::addCannon(CCObject* pSender)
 {
-	CCLog("addCannon");
+	//CCLog("addCannon");
 
 	levelCannon++;
 	if(levelCannon > 6){
@@ -78,7 +78,7 @@ void Cannon::addCannon(CCObject* pSender)
 
 void Cannon::reduceCannon(CCObject* pSender)
 {
-	CCLog("reduceCannon");
+	//CCLog("reduceCannon");
 
 	levelCannon--;
 	
