@@ -21,6 +21,7 @@ public:
 	float ratio;
 	//FishNet* fishNet;
 	int levelBullet;
+	CC_SYNTHESIZE(bool, isCaught, Caught);//×Óµ¯µÄ´¥·¢×´Ì¬
 	void removeSelf();
 	void shoot(cocos2d::CCPoint startPosition, cocos2d::CCPoint endPosition, float angle);
 	//void addCannon(cocos2d::CCObject *sender);

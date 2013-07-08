@@ -29,6 +29,7 @@ bool Fish::createFish(int level, GameScene *gameScene, cocos2d::CCSpriteBatchNod
 {
 	levelFish = level;
 	m_bBubble = false;
+	this->setCaught(false);
 	CCLog("create fish! levelFish is %d", levelFish);
 
 	if(levelFish == 11 || levelFish == 12){//美人鱼要气泡
@@ -175,6 +176,27 @@ void Fish::runFromLeftToRight(CCSprite *sprite)
     CCFiniteTimeAction *releaseFunc = CCCallFunc::create(this, callfunc_selector(Fish::removeSelf));
     CCFiniteTimeAction *sequence = CCSequence::create(moveto, releaseFunc, NULL);
     sprite->runAction(sequence);
+}
+
+void Fish::showCaught()
+{
+	this->setCaught(true);
+    _spriteFish->stopAllActions();
+    
+    CCArray *frames = CCArray::createWithCapacity(11);
+    for(int i = 1; i <= 4; i++)
+    {
+        CCString *frameName = CCString::createWithFormat("fish%02d_catch_%02d.png", levelFish ,i);
+        CCSpriteFrame *pFrame = CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(frameName->getCString());
+        if(pFrame)
+            frames->addObject(pFrame);
+    }
+    CCAnimation *animation = CCAnimation::createWithSpriteFrames(frames, 0.3f);
+    CCAnimate *animate = CCAnimate::create(animation);
+    CCFiniteTimeAction *callFunc = CCCallFunc::create(this, callfunc_selector(Fish::removeSelf));
+    CCFiniteTimeAction *sequence = CCSequence::create(animate, callFunc, NULL);
+
+    _spriteFish->runAction(sequence);
 }
 
 void Fish::removeSelf()

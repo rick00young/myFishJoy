@@ -88,6 +88,7 @@ bool GameScene::init()
 
 		this->schedule(schedule_selector(GameScene::updateFish), 1.0f);//¸üÐÂÓã
         bRet = true;
+		scheduleUpdate();//
     } while (0);
 
     return bRet;
@@ -287,31 +288,28 @@ void GameScene::addFish()
 		Fish::initFish(type, this, m_pBatchNode4);
 		return;
 	 }
-	 //std::set<int>::iterator it = fishInBatchNode1.find(type);FishInBatchNode1[LENGTH_ARRAY]
-	 //CCLog("it is %d", it);
-	 /*
-	 int node = type % 4;
-	 switch (node){
-		case 0:
-			int ;
-			Fish::initFish(type, this, m_pBatchNode1);
-			break;
-		case 1:
-			Fish::initFish(type, this, m_pBatchNode2);
-			break;
-		case 2:
-			Fish::initFish(type, this, m_pBatchNode3);
-			break;
-		case 3:
-			Fish::initFish(type, this, m_pBatchNode4);
-			break;
-		default:
-			break;
-	 }
-	 */
+
 }
 
+void GameScene::update(float time)
+{
+	//CCLog("update");
+	CCObject *FishObj = NULL;
+	CCObject *BulletObj = NULL;
+	CCARRAY_FOREACH(m_pBullets, BulletObj){
+		CCLog("Bullet");
+		Bullet *pBullet = (Bullet *)BulletObj;
+		if(pBullet->getCaught()){
+			continue;
+		}
 
+		bool caught = false;
+		CCARRAY_FOREACH(m_pFishes, FishObj){
+			CCLog("Fish");
+			Fish *pFish = (Fish *)FishObj;
+		}
+	}
+}
 
 void GameScene::menuCloseCallback(CCObject* pSender)
 {

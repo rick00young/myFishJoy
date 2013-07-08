@@ -53,7 +53,7 @@ private:
 	void addFish();
 	void updateFish(float dt);
 	
-    
+    virtual void update(float time);
 };
 
 #endif  // __HELLOWORLD_SCENE_H__
