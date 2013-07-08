@@ -20,9 +20,9 @@ void Cannon::onEnter(void)
 	cannon = CCSprite::createWithSpriteFrameName("actor_cannon1_11.png");
 	CCSize size = CCDirector::sharedDirector()->getWinSize();
 	if(cannon){
-		cannon->setPosition(ccp(size.width/2 + 8,20));
-		cannon->setScale(ratio);
-		this->addChild(cannon,10);
+		//this->setPosition(ccp(size.width/2 + 8,20));
+		//cannon->setScale(ratio);
+		//this->addChild(cannon,10);
 		//CCLog("okkkkkkkk");
 	}else{
 		//CCLog("nooooooo");

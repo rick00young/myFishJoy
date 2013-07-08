@@ -41,6 +41,7 @@ public:
     //CC_SYNTHESIZE_RETAIN(Cannon *, m_pCannon, Cannon);
     //CC_SYNTHESIZE_RETAIN(RollNumGroup *, m_pRollNumGroup, RollNumGroup);
 	int levelCannon;
+	cocos2d::CCSpriteBatchNode *CannonBatchNode;
 	Cannon *cannon;
 	void addCannon(cocos2d::CCObject *sender);
 	void reduceCannon(cocos2d::CCObject *sender);

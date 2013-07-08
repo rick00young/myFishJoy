@@ -2,7 +2,7 @@
 #define FishingJoy_Cannon_h
 #include "cocos2d.h"
 
-class Cannon : public cocos2d::CCNode, public cocos2d::CCTargetedTouchDelegate
+class Cannon : public cocos2d::CCSprite
 {
 public:
 	Cannon(void);

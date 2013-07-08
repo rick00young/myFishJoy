@@ -173,8 +173,12 @@ void GameLayer::initCannon()
 	*/
 	CCSize size = CCDirector::sharedDirector()->getWinSize();
 
+	//CCTexture2D *pTexture = CCTextureCache::sharedTextureCache()->addImage("cannon.png");
+    CCSpriteBatchNode *CannonBatchNode = CCSpriteBatchNode::createWithTexture(pTexture);
+
 	cannon = new Cannon(ratio);
-	this->addChild(cannon,101,220);
+	//this->addChild(cannon,101,220);
+	CannonBatchNode->addChild(cannon);
 
 	CCMenuItemImage *addLevel = CCMenuItemImage::create("addA.png", "addB.png", this, menu_selector(GameLayer::addCannon));
 	
@@ -356,6 +360,8 @@ void GameLayer::addCannon(CCObject* pSender)
 	}
 
 	cannon->addLevel(levelCannon);
+
+
 }
 
 void GameLayer::reduceCannon(CCObject* pSender)

@@ -9,10 +9,10 @@ const int FishInBatchNode3[] = {16, 17};
 const int FishInBatchNode4[] = {11, 12};
 */
 
-const int FishInBatchNode1[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 13, 14};
-const int FishInBatchNode2[] = {10, 18};
-const int FishInBatchNode3[] = {16, 17};
-const int FishInBatchNode4[] = {11, 12};
+int FishInBatchNode1[LENGTH_ARRAY] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 13, 14};
+int FishInBatchNode2[LENGTH_ARRAY] = {10, 18};
+int FishInBatchNode3[LENGTH_ARRAY] = {16, 17};
+int FishInBatchNode4[LENGTH_ARRAY] = {11, 12};
 
 
 CCScene* GameScene::scene()
@@ -179,6 +179,8 @@ void GameScene::initFishes(){
     this->addChild(m_pBatchNode4);
 
 	m_pFishes->removeAllObjects();
+
+	this->addFish();
 }
 void GameScene::ccTouchesBegan(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent)
 {
@@ -248,8 +250,8 @@ void GameScene::updateFish(float dt)
         {
             //this->addFish();
 			//CCLog("add fish");
-			fish = Fish::initFish(2, this, m_pBatchNode1);
-			//this->addFish();
+			//fish = Fish::initFish(2, this, m_pBatchNode1);
+			this->addFish();
         }
     }
 }
@@ -257,7 +259,34 @@ void GameScene::updateFish(float dt)
 void GameScene::addFish()
 {
 	 int type = rand() % 18 + 1;
-	 //int* ip = find(FishInBatchNode1, FishInBatchNode1 + LENGTH_ARRAY, 50);
+	 int* ip = find(FishInBatchNode1, FishInBatchNode1 + LENGTH_ARRAY, type);
+	 
+	 if(ip != FishInBatchNode1 + LENGTH_ARRAY){
+		CCLog("find in FishInBatchNode1 *ip is %d", *ip);
+		Fish::initFish(type, this, m_pBatchNode1);
+		return;
+	 }
+
+	 ip = find(FishInBatchNode2, FishInBatchNode2 + LENGTH_ARRAY, type);
+	 if(ip != FishInBatchNode2 + LENGTH_ARRAY){
+		CCLog("find in FishInBatchNode2 *ip is %d", *ip);
+		Fish::initFish(type, this, m_pBatchNode2);
+		return;
+	 }
+	 
+	 ip = find(FishInBatchNode3, FishInBatchNode3 + LENGTH_ARRAY, type);
+	 if(ip != FishInBatchNode3 + LENGTH_ARRAY){
+		CCLog("find in FishInBatchNode3 *ip is %d", *ip);
+		Fish::initFish(type, this, m_pBatchNode3);
+		return;
+	 }
+
+	 ip = find(FishInBatchNode4, FishInBatchNode4 + LENGTH_ARRAY, type);
+	 if(ip != FishInBatchNode4 + LENGTH_ARRAY){
+		CCLog("find in FishInBatchNode4 *ip is %d", *ip);
+		Fish::initFish(type, this, m_pBatchNode4);
+		return;
+	 }
 	 //std::set<int>::iterator it = fishInBatchNode1.find(type);FishInBatchNode1[LENGTH_ARRAY]
 	 //CCLog("it is %d", it);
 	 /*

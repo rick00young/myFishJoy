@@ -11,8 +11,8 @@
 //#include "Box2D/Box2D.h"
 
 #include "SimpleAudioEngine.h"
-#define MAX_FISH_COUNT 5
-//#define LENGTH_ARRAY 12
+#define MAX_FISH_COUNT 15
+#define LENGTH_ARRAY 12
 
 class GameScene : public cocos2d::CCLayer
 {
