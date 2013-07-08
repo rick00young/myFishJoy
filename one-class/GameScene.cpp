@@ -214,7 +214,7 @@ void GameScene::ccTouchesEnded(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEven
 	int level = cannon->getLevelCannon();
 	bullet = Bullet::initBullet(level,this, m_pBatchNode2);
 	
-	CCLog("bullets count is %d", this->getBullets()->count());
+	//CCLog("bullets count is %d", this->getBullets()->count());
 	
     CCSetIterator it = pTouches->begin();
     while(it != pTouches->end() && isControl)
@@ -242,7 +242,7 @@ void GameScene::showFishNet(CCPoint point)
 
 void GameScene::updateFish(float dt)
 {
-	CCLog("update fish");
+	//CCLog("update fish");
 	if(m_pFishes->count() < MAX_FISH_COUNT)
     {
         int n = MAX_FISH_COUNT - m_pFishes->count();
@@ -263,28 +263,28 @@ void GameScene::addFish()
 	 int* ip = find(FishInBatchNode1, FishInBatchNode1 + LENGTH_ARRAY, type);
 	 
 	 if(ip != FishInBatchNode1 + LENGTH_ARRAY){
-		CCLog("find in FishInBatchNode1 *ip is %d", *ip);
+		//CCLog("find in FishInBatchNode1 *ip is %d", *ip);
 		Fish::initFish(type, this, m_pBatchNode1);
 		return;
 	 }
 
 	 ip = find(FishInBatchNode2, FishInBatchNode2 + LENGTH_ARRAY, type);
 	 if(ip != FishInBatchNode2 + LENGTH_ARRAY){
-		CCLog("find in FishInBatchNode2 *ip is %d", *ip);
+		//CCLog("find in FishInBatchNode2 *ip is %d", *ip);
 		Fish::initFish(type, this, m_pBatchNode2);
 		return;
 	 }
 	 
 	 ip = find(FishInBatchNode3, FishInBatchNode3 + LENGTH_ARRAY, type);
 	 if(ip != FishInBatchNode3 + LENGTH_ARRAY){
-		CCLog("find in FishInBatchNode3 *ip is %d", *ip);
+		//CCLog("find in FishInBatchNode3 *ip is %d", *ip);
 		Fish::initFish(type, this, m_pBatchNode3);
 		return;
 	 }
 
 	 ip = find(FishInBatchNode4, FishInBatchNode4 + LENGTH_ARRAY, type);
 	 if(ip != FishInBatchNode4 + LENGTH_ARRAY){
-		CCLog("find in FishInBatchNode4 *ip is %d", *ip);
+		//CCLog("find in FishInBatchNode4 *ip is %d", *ip);
 		Fish::initFish(type, this, m_pBatchNode4);
 		return;
 	 }
@@ -297,16 +297,28 @@ void GameScene::update(float time)
 	CCObject *FishObj = NULL;
 	CCObject *BulletObj = NULL;
 	CCARRAY_FOREACH(m_pBullets, BulletObj){
-		CCLog("Bullet");
+		//CCLog("Bullet");
 		Bullet *pBullet = (Bullet *)BulletObj;
-		if(pBullet->getCaught()){
+
+		if(!pBullet && pBullet->getCaught()){
 			continue;
 		}
 
 		bool caught = false;
 		CCARRAY_FOREACH(m_pFishes, FishObj){
-			CCLog("Fish");
+			//CCLog("Fish");
 			Fish *pFish = (Fish *)FishObj;
+            if(!pFish && pFish->getCaught()){
+                continue;
+            }
+
+            if(pFish && pBullet && pFish->getSpriteFish()->boundingBox().containsPoint(pBullet->getSpriteBullet()->getPosition())){
+                CCLog("hit the fish");
+                pFish->setCaught(true);
+                pBullet->setCaught(true);
+                pFish->showCaught();
+            }
+                
 		}
 	}
 }

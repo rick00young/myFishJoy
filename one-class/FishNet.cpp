@@ -11,7 +11,7 @@ FishNet::FishNet(void)
 
 FishNet::~FishNet(void)
 {
-	CCLog("release FishNet ++++++++++++++++++++++++++++++++++++++++++++++++++++");
+	//CCLog("release FishNet ++++++++++++++++++++++++++++++++++++++++++++++++++++");
 }
 
 FishNet* FishNet::initFishNet(int level, GameScene *gameScene, CCSpriteBatchNode *m_pBatchNode3)
@@ -28,7 +28,7 @@ FishNet* FishNet::initFishNet(int level, GameScene *gameScene, CCSpriteBatchNode
 
 bool FishNet::createFishNet(int level, GameScene *gameScene, CCSpriteBatchNode *m_pBatchNode3)
 {
-	CCLog("fishnet is created");
+	//CCLog("fishnet is created");
 	levelNet = level;
 	this->setgameScene(gameScene);
 
@@ -56,7 +56,7 @@ void FishNet::showFishNet(CCPoint point)
 
 void FishNet::removeSelf()
 {
-	CCLog("release fishnet");
+	//CCLog("release fishnet");
 
 	_netSprite->removeFromParentAndCleanup(true);
 	this->getgameScene()->getFishNets()->removeObject(this);

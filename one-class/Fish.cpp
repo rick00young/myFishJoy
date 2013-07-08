@@ -11,7 +11,13 @@ Fish::Fish(void)
 
 Fish::~Fish(void)
 {
-	CCLog("release fish *****************************************");
+	//CCLog("release fish *****************************************");
+    /*
+    if(_spriteFish){
+        delete _spriteFish;
+        _spriteFish = NULL;
+    }
+    */
 }
 
 Fish* Fish::initFish(int level, GameScene *gameScene, cocos2d::CCSpriteBatchNode *pBatchNodeFish)
@@ -30,7 +36,7 @@ bool Fish::createFish(int level, GameScene *gameScene, cocos2d::CCSpriteBatchNod
 	levelFish = level;
 	m_bBubble = false;
 	this->setCaught(false);
-	CCLog("create fish! levelFish is %d", levelFish);
+	//CCLog("create fish! levelFish is %d", levelFish);
 
 	if(levelFish == 11 || levelFish == 12){//美人鱼要气泡
 		m_bBubble = true;
@@ -40,9 +46,10 @@ bool Fish::createFish(int level, GameScene *gameScene, cocos2d::CCSpriteBatchNod
 	CCSize size = CCDirector::sharedDirector()->getWinSize();
 	ratio = size.width  / 960; 
 	CCString *originalFrameName = CCString::createWithFormat("fish%02d_01.png", levelFish);
-	CCLog("fish name is %s", originalFrameName->getCString());
+	//CCLog("fish name is %s", originalFrameName->getCString());
 	//_spriteFish = CCSprite::createWithSpriteFrameName("fish01_01.png");
-	_spriteFish = CCSprite::createWithSpriteFrameName(originalFrameName->getCString());
+    this->setSpriteFish(CCSprite::createWithSpriteFrameName(originalFrameName->getCString()));//创建鱼精灵
+    
 	
 	//动画创建
 	CCArray *frames = CCArray::create();
@@ -73,8 +80,8 @@ bool Fish::createFish(int level, GameScene *gameScene, cocos2d::CCSpriteBatchNod
 
 void Fish::runWithPath()
 {
-	//this->runWithLine();
-	this->runFromLeftToRight(_spriteFish);
+	this->runWithLine();
+	//this->runFromLeftToRight(_spriteFish);
 }
 
 void Fish::runWithLine()
@@ -201,7 +208,7 @@ void Fish::showCaught()
 
 void Fish::removeSelf()
 {
-	CCLog("callback fish remveself");
+	//CCLog("callback fish remveself");
 	_spriteFish->removeFromParentAndCleanup(true);
 	this->getgameScene()->getFishes()->removeObject(this);
 	

@@ -14,7 +14,13 @@ Bullet::Bullet(void)
 
 Bullet::~Bullet(void)
 {
-	CCLog("bullt is deleting....................................");
+	//CCLog("bullt is deleting....................................");
+    /*
+    if(_spriteBullet){
+        delete _spriteBullet;
+        _spriteBullet = NULL;
+    }
+    */
 }
 
 Bullet* Bullet::initBullet(int level, GameScene *gameScene, cocos2d::CCSpriteBatchNode *pBatchNodeBullet)
@@ -33,9 +39,10 @@ bool Bullet::createBullet(int level, GameScene *gameScene,cocos2d::CCSpriteBatch
 {
 	levelBullet = level;//子弹级别
 	this->setgameScene(gameScene);
+    this->setCaught(false);
 	CCString *frameName = CCString::createWithFormat("bullet0%d.png",level);
 	//_spriteBullet = CCSprite::createWithSpriteFrameName("bullet01.png");
-	_spriteBullet = CCSprite::createWithSpriteFrameName(frameName->getCString());
+    this->setSpriteBullet(CCSprite::createWithSpriteFrameName(frameName->getCString()));
 	
 	gameScene->getBullets()->addObject(this);
 
@@ -47,7 +54,7 @@ bool Bullet::createBullet(int level, GameScene *gameScene,cocos2d::CCSpriteBatch
 
 void Bullet::shoot(CCPoint startPosition, CCPoint endPosition, float angle)
 {
-	CCLog("level is %d", levelBullet);
+	//CCLog("level is %d", levelBullet);
 	_spriteBullet->setPosition(startPosition);
 	//计算子弹的最大射程
 

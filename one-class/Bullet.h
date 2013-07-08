@@ -16,8 +16,8 @@ public:
 	static Bullet* initBullet(int level, GameScene *gameScene, cocos2d::CCSpriteBatchNode *pBatchNodeBullet);
 	bool createBullet(int level, GameScene *gameScene, cocos2d::CCSpriteBatchNode *pBatchNodeBullet);
 	CC_SYNTHESIZE(GameScene *, m_pgameScene, gameScene);
-
-	cocos2d::CCSprite * _spriteBullet;
+    CC_SYNTHESIZE(cocos2d::CCSprite *, _spriteBullet, SpriteBullet);//×Óµ¯¾«Áé
+	 
 	float ratio;
 	//FishNet* fishNet;
 	int levelBullet;
