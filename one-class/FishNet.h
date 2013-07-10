@@ -12,9 +12,9 @@ public:
 	static FishNet* initFishNet(int level, GameScene *gameScene, cocos2d::CCSpriteBatchNode *m_pBatchNode3);
 	bool createFishNet(int level, GameScene *gameScene, cocos2d::CCSpriteBatchNode *m_pBatchNode3);
 	CC_SYNTHESIZE(GameScene *, m_pgameScene, gameScene);
-
-	cocos2d::CCSprite* _netSprite;
-	void showFishNet(cocos2d::CCPoint point);
+    CC_SYNTHESIZE(cocos2d::CCSprite *, _netSprite, SpriteFishNet);//ÓãÍø¾«Áé
+	//cocos2d::CCSprite* _netSprite;
+	void showFishNet(int level,cocos2d::CCPoint point);
 	void removeSelf();
 	int levelNet;
 

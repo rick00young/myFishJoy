@@ -63,7 +63,7 @@ void Bullet::shoot(int level,CCPoint startPosition, CCPoint endPosition, float a
         _spriteBullet->setDisplayFrame(frame); 
     }
 
-
+    _spriteBullet->setVisible(true);
 	_spriteBullet->setPosition(startPosition);
 	//计算子弹的最大射程
 

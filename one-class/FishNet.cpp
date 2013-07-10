@@ -32,23 +32,32 @@ bool FishNet::createFishNet(int level, GameScene *gameScene, CCSpriteBatchNode *
 	levelNet = level;
 	this->setgameScene(gameScene);
 
-	CCString *frameName = CCString::createWithFormat("net0%d.png",level);
+	CCString *frameName = CCString::createWithFormat("net0%d.png",levelNet);
 	_netSprite = CCSprite::createWithSpriteFrameName(frameName->getCString());
+    _netSprite->setVisible(false);
+    
 	gameScene->getFishNets()->addObject(this);
 	m_pBatchNode3->addChild(_netSprite);
 	return true;
 }
 
-void FishNet::showFishNet(CCPoint point)
+void FishNet::showFishNet(int level, CCPoint point)
 {
+    _netSprite->stopAllActions();
+    levelNet = level;
+    CCString *frameName = CCString::createWithFormat("net0%d.png",levelNet);
+
+    CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(frameName->getCString()); 
+    if(frame){
+        _netSprite->setDisplayFrame(frame); 
+        CCLog("levelNet is %d", levelNet);
+    }
+
 	_netSprite->setPosition(point);
 
-	CCFadeTo* fadeTo = CCFadeTo::create(1.0f, 0.0f);
+	CCFadeOut* fadeOut = CCFadeOut::create(1.0f);//FadeTo与setVisibel不能配合使用
 	CCFiniteTimeAction *releaseFunc = CCCallFunc::create(this, callfunc_selector(FishNet::removeSelf));
-	CCFiniteTimeAction *sequence = CCSequence::create(fadeTo,releaseFunc, NULL);
-	//CCString *bulletName = CCString::createWithFormat("bullet0%d.png", levelBullet);
-	//_spriteBullet->setRotation(angle);
-	//_spriteBullet->runAction(sequence);
+	CCFiniteTimeAction *sequence = CCSequence::create(fadeOut,releaseFunc, NULL);
 	_netSprite->runAction(sequence);
 	
 }
@@ -57,9 +66,11 @@ void FishNet::showFishNet(CCPoint point)
 void FishNet::removeSelf()
 {
 	//CCLog("release fishnet");
-
-	_netSprite->removeFromParentAndCleanup(true);
-	this->getgameScene()->getFishNets()->removeObject(this);
+    _netSprite->setVisible(false);
+    CCLog("visible is %d", _netSprite->isVisible());
+    //_netSprite->runAction(CCFadeTo::create(0.0f, 1.0f));
+	//_netSprite->removeFromParentAndCleanup(true);
+	//this->getgameScene()->getFishNets()->removeObject(this);
 	
-	this->autorelease();
+	//this->autorelease();
 }

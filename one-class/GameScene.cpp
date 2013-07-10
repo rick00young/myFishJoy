@@ -166,6 +166,7 @@ void GameScene::initCannon()
     }
 
     CCLog("the ccarray bullet count is %d", this->getBullets()->count());
+    CCLog("the ccarray fishnet count is %d", this->getFishNets()->count());
 	
 }
 
@@ -220,12 +221,8 @@ void GameScene::ccTouchesBegan(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEven
 
 void GameScene::ccTouchesEnded(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent)
 {	
-	//CCLog("touch end");
-	//cannon->shoot();
+
 	int level = cannon->getLevelCannon();
-	//bullet = Bullet::initBullet(level,this, m_pBatchNode2);
-	
-	//CCLog("bullets count is %d", this->getBullets()->count());
 	
     CCSetIterator it = pTouches->begin();
     while(it != pTouches->end() && isControl)
@@ -233,9 +230,6 @@ void GameScene::ccTouchesEnded(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEven
         CCTouch *pTouch = (CCTouch *)*it;
         CCPoint pt = CCDirector::sharedDirector()->convertToGL(pTouch->getLocationInView());
         
-		//if(bullet){
-			//bullet->shoot(cannon->getPosition(), pt, cannon->getAngle());
-		//}
         for(int j = 0;j < (int)(this->getBullets()->count()); j++){
              Bullet *_bullet = (Bullet *)this->getBullets()->objectAtIndex(j);
             //CCLog("shoot");
@@ -257,10 +251,22 @@ void GameScene::ccTouchesEnded(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEven
 
 void GameScene::showFishNet(CCPoint point)
 {
-	//CCLog("show fish net");
+	CCLog("show fish net");
 	int level = cannon->getLevelCannon();
-	fishNet = FishNet::initFishNet(level, this, m_pBatchNode3);
-	fishNet->showFishNet(point);
+	//fishNet = FishNet::initFishNet(level, this, m_pBatchNode3);
+	//fishNet->showFishNet(point);
+
+    for(int j = 0;j < (int)(this->getFishNets()->count()); j++){
+            FishNet *_fishNet = (FishNet *)this->getFishNets()->objectAtIndex(j);
+             CCLog("net");
+            if(!(_fishNet->getSpriteFishNet()->isVisible())){
+                _fishNet->getSpriteFishNet()->setVisible(true);
+                _fishNet->showFishNet(level, point);
+                CCLog("shoot");
+                break;
+             }
+                  
+    }
 }
 
 void GameScene::updateFish(float dt)
