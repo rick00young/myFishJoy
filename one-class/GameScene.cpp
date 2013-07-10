@@ -82,9 +82,9 @@ bool GameScene::init()
 
 		this->setTouchEnabled(true);
 		this->initFrames();
-		this->initCannon();
 		this->initBackground();
 		this->initFishes();
+        this->initCannon();
 
 		this->schedule(schedule_selector(GameScene::updateFish), 1.0f);//¸üÐÂÓã
         bRet = true;
@@ -136,7 +136,7 @@ void GameScene::initBackground()
 
 void GameScene::initCannon()
 {
-	CCLog("gae00000000 ");
+	CCLog("cannon ");
 	this->setBullets(CCArray::createWithCapacity(100));
 	m_pBullets->retain();
 
@@ -155,6 +155,17 @@ void GameScene::initCannon()
 
 	this->addChild(cannon,101,220);
 
+    for(int i = 0; i < 15; i++){
+        bullet = Bullet::initBullet(1,this, m_pBatchNode2);
+        CCLog("create bullet");
+    }
+
+    for(int i = 0; i < 15; i++){
+        fishNet = FishNet::initFishNet(1, this, m_pBatchNode3);
+        CCLog("create fishNet");
+    }
+
+    CCLog("the ccarray bullet count is %d", this->getBullets()->count());
 	
 }
 
@@ -212,7 +223,7 @@ void GameScene::ccTouchesEnded(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEven
 	//CCLog("touch end");
 	//cannon->shoot();
 	int level = cannon->getLevelCannon();
-	bullet = Bullet::initBullet(level,this, m_pBatchNode2);
+	//bullet = Bullet::initBullet(level,this, m_pBatchNode2);
 	
 	//CCLog("bullets count is %d", this->getBullets()->count());
 	
@@ -222,9 +233,21 @@ void GameScene::ccTouchesEnded(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEven
         CCTouch *pTouch = (CCTouch *)*it;
         CCPoint pt = CCDirector::sharedDirector()->convertToGL(pTouch->getLocationInView());
         
-		if(bullet){
-			bullet->shoot(cannon->getPosition(), pt, cannon->getAngle());
-		}
+		//if(bullet){
+			//bullet->shoot(cannon->getPosition(), pt, cannon->getAngle());
+		//}
+        for(int j = 0;j < (int)(this->getBullets()->count()); j++){
+             Bullet *_bullet = (Bullet *)this->getBullets()->objectAtIndex(j);
+            //CCLog("shoot");
+             if(!(_bullet->getSpriteBullet()->isVisible())){
+                _bullet->getSpriteBullet()->setVisible(true);
+                _bullet->shoot(level,cannon->getPosition(), pt, cannon->getAngle()); 
+                //CCLog("shoot");
+                break;
+             }
+                  
+        }
+
         break;
     }
 
@@ -252,7 +275,7 @@ void GameScene::updateFish(float dt)
             //this->addFish();
 			//CCLog("add fish");
 			//fish = Fish::initFish(2, this, m_pBatchNode1);
-			this->addFish();
+			//this->addFish();
         }
     }
 }

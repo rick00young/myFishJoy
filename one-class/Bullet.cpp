@@ -43,18 +43,27 @@ bool Bullet::createBullet(int level, GameScene *gameScene,cocos2d::CCSpriteBatch
 	CCString *frameName = CCString::createWithFormat("bullet0%d.png",level);
 	//_spriteBullet = CCSprite::createWithSpriteFrameName("bullet01.png");
     this->setSpriteBullet(CCSprite::createWithSpriteFrameName(frameName->getCString()));
-	
+    _spriteBullet->setVisible(false);//初始化时可见性为false
 	gameScene->getBullets()->addObject(this);
 
 
 	pBatchNodeBullet->addChild(_spriteBullet);
-	//this->addChild(_spriteBullet);
+	
 	return true;
 }
 
-void Bullet::shoot(CCPoint startPosition, CCPoint endPosition, float angle)
+void Bullet::shoot(int level,CCPoint startPosition, CCPoint endPosition, float angle)
 {
 	//CCLog("level is %d", levelBullet);
+    levelBullet = level;
+    CCString *frameName = CCString::createWithFormat("bullet0%d.png",level);
+
+    CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(frameName->getCString()); 
+    if(frame){
+        _spriteBullet->setDisplayFrame(frame); 
+    }
+
+
 	_spriteBullet->setPosition(startPosition);
 	//计算子弹的最大射程
 
@@ -99,10 +108,11 @@ void Bullet::shoot(CCPoint startPosition, CCPoint endPosition, float angle)
 void Bullet::removeSelf()
 {
 	//CCLog("moved....");
+    _spriteBullet->setVisible(false);
 	this->getgameScene()->showFishNet(_spriteBullet->getPosition());//展现鱼网
 
-	_spriteBullet->removeFromParentAndCleanup(true);
-	this->getgameScene()->getBullets()->removeObject(this);
+	//_spriteBullet->removeFromParentAndCleanup(true);
+	//this->getgameScene()->getBullets()->removeObject(this);
 	
-	this->autorelease();
+	//this->autorelease();
 }

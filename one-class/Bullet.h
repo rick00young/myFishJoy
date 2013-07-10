@@ -23,7 +23,7 @@ public:
 	int levelBullet;
 	CC_SYNTHESIZE(bool, isCaught, Caught);//×Óµ¯µÄ´¥·¢×´Ì¬
 	void removeSelf();
-	void shoot(cocos2d::CCPoint startPosition, cocos2d::CCPoint endPosition, float angle);
+	void shoot(int level, cocos2d::CCPoint startPosition, cocos2d::CCPoint endPosition, float angle);
 	//void addCannon(cocos2d::CCObject *sender);
 	//void reduceCannon(cocos2d::CCObject *sender);
 	//void rotateToPoint(cocos2d::CCPoint ptTo);
