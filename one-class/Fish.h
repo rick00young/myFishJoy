@@ -11,15 +11,16 @@ public:
 	~Fish(void);
 	CC_SYNTHESIZE(GameScene *, m_pgameScene, gameScene);
 
-	static Fish* initFish(int level, GameScene *gameScene, cocos2d::CCSpriteBatchNode *pBatchNodeFish);
-	bool createFish(int level, GameScene *gameScene, cocos2d::CCSpriteBatchNode *pBatchNodeFish);
+	static Fish* initFish(int level, GameScene *gameScene, cocos2d::CCSpriteBatchNode *pBatchNodeFish, cocos2d::CCArray *Fishes);
+	bool createFish(int level, GameScene *gameScene, cocos2d::CCSpriteBatchNode *pBatchNodeFish, cocos2d::CCArray *Fishes);
 	CC_SYNTHESIZE(cocos2d::CCParticleSystem *, m_pBubble, Bubble);
 	CC_SYNTHESIZE(bool, isCaught, Caught);//鱼的捕捉状态
     CC_SYNTHESIZE(cocos2d::CCSprite *, _spriteFish, SpriteFish);//鱼的精灵 getter and setter
 	void runWithPath();
 	void runWithLine();
-	void runFromLeftToRight(cocos2d::CCSprite *sprite);
+	void runFromLeftToRight();
     void showCaught();
+    void changeFish(int level);
 private:
 	float ratio;
 	int levelFish;//鱼的种类

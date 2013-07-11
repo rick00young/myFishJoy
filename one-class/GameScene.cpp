@@ -88,7 +88,7 @@ bool GameScene::init()
 
 		this->schedule(schedule_selector(GameScene::updateFish), 1.0f);//¸üÐÂÓã
         bRet = true;
-		scheduleUpdate();//
+		//scheduleUpdate();//
     } while (0);
 
     return bRet;
@@ -175,6 +175,15 @@ void GameScene::initFishes(){
 	this->setFishes(CCArray::createWithCapacity(MAX_FISH_COUNT));    
 	m_pFishes->retain();
 
+    this->setFishes2(CCArray::createWithCapacity(MAX_FISH_COUNT));    
+	m_pFishes2->retain();
+
+    this->setFishes3(CCArray::createWithCapacity(MAX_FISH_COUNT));    
+	m_pFishes3->retain();
+
+    this->setFishes4(CCArray::createWithCapacity(MAX_FISH_COUNT));    
+	m_pFishes4->retain();
+
 	CCTexture2D *texture = CCTextureCache::sharedTextureCache()->addImage("fish.png");
     this->setBatchNode1(CCSpriteBatchNode::createWithTexture(texture));
     this->addChild(m_pBatchNode1);
@@ -194,6 +203,27 @@ void GameScene::initFishes(){
 	m_pFishes->removeAllObjects();
 
 	this->addFish();
+    FishCount = 0;
+    for(int i = 0; i < 60; i++){
+        if(i < 20){
+            Fish::initFish(1, this, m_pBatchNode1, m_pFishes);
+        }
+
+        if(i >= 20 && i < 40){
+            Fish::initFish(10, this, m_pBatchNode2, m_pFishes2);
+        }
+
+        if(i >= 40 && i < 50){
+            Fish::initFish(16, this, m_pBatchNode3, m_pFishes3);
+        }
+
+        if(i >= 50){
+            Fish::initFish(11, this, m_pBatchNode4, m_pFishes4);
+        }
+        
+    }
+
+    CCLog("the fish count is %d", this->getFishes2()->count());
 }
 void GameScene::ccTouchesBegan(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent)
 {
@@ -272,16 +302,16 @@ void GameScene::showFishNet(CCPoint point)
 void GameScene::updateFish(float dt)
 {
 	//CCLog("update fish");
-	if(m_pFishes->count() < MAX_FISH_COUNT)
+	if(FishCount < MAX_FISH_COUNT)
     {
         int n = MAX_FISH_COUNT - m_pFishes->count();
         int nAdd = rand() % n + 1;
         for(int i = 0; i < nAdd; i++)
         {
-            //this->addFish();
 			//CCLog("add fish");
-			//fish = Fish::initFish(2, this, m_pBatchNode1);
-			//this->addFish();
+            this->addFish();
+            
+			
         }
     }
 }
@@ -293,17 +323,37 @@ void GameScene::addFish()
 	 
 	 if(ip != FishInBatchNode1 + LENGTH_ARRAY){
 		//CCLog("find in FishInBatchNode1 *ip is %d", *ip);
-		Fish::initFish(type, this, m_pBatchNode1);
+         for(int i = 0; i < (int)(this->getFishes()->count()); i++){
+             Fish* _fish = (Fish *)this->getFishes()->objectAtIndex(i);
+             if(!(_fish->getSpriteFish()->isVisible())){
+                 FishCount++;
+                 if(FishCount > 5) return;
+                 _fish->getSpriteFish()->setVisible(true);
+                 _fish->changeFish(type);
+                 CCLog("_fish->getSpriteFish()->isVisible() %d",FishCount);
+                 break;
+             }
+         }
 		return;
 	 }
-
+     /*
 	 ip = find(FishInBatchNode2, FishInBatchNode2 + LENGTH_ARRAY, type);
 	 if(ip != FishInBatchNode2 + LENGTH_ARRAY){
-		//CCLog("find in FishInBatchNode2 *ip is %d", *ip);
-		Fish::initFish(type, this, m_pBatchNode2);
+         for(int i = 0; i < (int)(this->getFishes2()->count()); i++){
+             Fish* _fish = (Fish *)this->getFishes2()->objectAtIndex(i);
+             if(!(_fish->getSpriteFish()->isVisible())){
+                 FishCount++;
+                 if(FishCount > 5) return;
+                 _fish->getSpriteFish()->setVisible(true);
+                 _fish->changeFish(type);
+                 CCLog("_fish->getSpriteFish()->isVisible() %d",FishCount);
+                 break;
+             }
+         }
 		return;
 	 }
 	 
+     /*
 	 ip = find(FishInBatchNode3, FishInBatchNode3 + LENGTH_ARRAY, type);
 	 if(ip != FishInBatchNode3 + LENGTH_ARRAY){
 		//CCLog("find in FishInBatchNode3 *ip is %d", *ip);
@@ -317,6 +367,7 @@ void GameScene::addFish()
 		Fish::initFish(type, this, m_pBatchNode4);
 		return;
 	 }
+     */
 
 }
 

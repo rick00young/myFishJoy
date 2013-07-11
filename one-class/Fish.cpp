@@ -20,10 +20,10 @@ Fish::~Fish(void)
     */
 }
 
-Fish* Fish::initFish(int level, GameScene *gameScene, cocos2d::CCSpriteBatchNode *pBatchNodeFish)
+Fish* Fish::initFish(int level, GameScene *gameScene, cocos2d::CCSpriteBatchNode *pBatchNodeFish, cocos2d::CCArray *Fishes)
 {
 	Fish* _fish = new Fish();
-	if(_fish && _fish->createFish(level, gameScene, pBatchNodeFish)){
+	if(_fish && _fish->createFish(level, gameScene, pBatchNodeFish, Fishes)){
 		return _fish;
 	}else{
 		delete _fish;
@@ -31,7 +31,7 @@ Fish* Fish::initFish(int level, GameScene *gameScene, cocos2d::CCSpriteBatchNode
 	}
 }
 
-bool Fish::createFish(int level, GameScene *gameScene, cocos2d::CCSpriteBatchNode *pBatchNodeFish)
+bool Fish::createFish(int level, GameScene *gameScene, cocos2d::CCSpriteBatchNode *pBatchNodeFish, cocos2d::CCArray *Fishes)
 {
 	levelFish = level;
 	m_bBubble = false;
@@ -50,8 +50,24 @@ bool Fish::createFish(int level, GameScene *gameScene, cocos2d::CCSpriteBatchNod
 	//_spriteFish = CCSprite::createWithSpriteFrameName("fish01_01.png");
     this->setSpriteFish(CCSprite::createWithSpriteFrameName(originalFrameName->getCString()));//创建鱼精灵
     
-	
+    _spriteFish->setVisible(false);
+	if(_spriteFish){//规避指针错误
+		_spriteFish->setScale(ratio);
+		//gameScene->getFishes()->addObject(this);
+        Fishes->addObject(this);
+		pBatchNodeFish->addChild(_spriteFish);
+		//this->runWithPath();
+	}
+
+		
+	return true;
+}
+
+void Fish::changeFish(int level)
+{
 	//动画创建
+    
+    levelFish = level;
 	CCArray *frames = CCArray::create();
     for(int i = 1; i <= 16; i++)
     {
@@ -65,23 +81,21 @@ bool Fish::createFish(int level, GameScene *gameScene, cocos2d::CCSpriteBatchNod
     animation->setRestoreOriginalFrame(false);
     CCAnimate *animate = CCAnimate::create(animation);
     CCAction *swing = CCRepeatForever::create(animate);
+    if(swing){
+        CCLog("pppppppppppppppppppppppppppppp");
+    }
 
 	if(_spriteFish){//规避指针错误
-		_spriteFish->setScale(ratio);
 		_spriteFish->runAction(swing);
-		gameScene->getFishes()->addObject(this);
-		pBatchNodeFish->addChild(_spriteFish);
 		this->runWithPath();
 	}
-		
-	return true;
+    
 }
-
 
 void Fish::runWithPath()
 {
-	this->runWithLine();
-	//this->runFromLeftToRight(_spriteFish);
+	//this->runWithLine();
+	this->runFromLeftToRight();
 }
 
 void Fish::runWithLine()
@@ -158,10 +172,10 @@ void Fish::showBubble(CCPoint start, CCPoint end, float angle, float duation){
     m_pBubble->runAction(act);
 }
 
-void Fish::runFromLeftToRight(CCSprite *sprite)
+void Fish::runFromLeftToRight()
 {
 	CCMoveTo *moveto = NULL;
-    CCSize fishSize = sprite->getContentSize();
+    CCSize fishSize = _spriteFish->getContentSize();
     CCSize winSize = CCDirector::sharedDirector()->getWinSize();
     CCPoint ptStart, ptEnd;
     //float radius = fmaxf(fishSize.width, fishSize.height) / 2;
@@ -176,13 +190,13 @@ void Fish::runFromLeftToRight(CCSprite *sprite)
     float rotation = 180.0f - angle * 180.0f / M_PI;
     
     float duration = rand() % 10 + 4.0f;
-    sprite->setPosition(ptStart);
-    sprite->setRotation(rotation);
+    _spriteFish->setPosition(ptStart);
+    _spriteFish->setRotation(rotation);
     moveto = CCMoveTo::create(duration, ptEnd);
 
     CCFiniteTimeAction *releaseFunc = CCCallFunc::create(this, callfunc_selector(Fish::removeSelf));
     CCFiniteTimeAction *sequence = CCSequence::create(moveto, releaseFunc, NULL);
-    sprite->runAction(sequence);
+    _spriteFish->runAction(sequence);
 }
 
 void Fish::showCaught()
@@ -208,9 +222,10 @@ void Fish::showCaught()
 
 void Fish::removeSelf()
 {
+    _spriteFish->setVisible(false);
 	//CCLog("callback fish remveself");
-	_spriteFish->removeFromParentAndCleanup(true);
-	this->getgameScene()->getFishes()->removeObject(this);
+	//_spriteFish->removeFromParentAndCleanup(true);
+	//this->getgameScene()->getFishes()->removeObject(this);
 	
-	this->autorelease();
+	//this->autorelease();
 }
