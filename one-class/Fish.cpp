@@ -68,13 +68,13 @@ void Fish::changeFish(int level)
 	//¶¯»­´´½¨
     _spriteFish->stopAllActions();
     levelFish = level;
-    CCLog("levelFish is %d", levelFish);
+    //CCLog("levelFish is %d", levelFish);
     CCString *frameName = CCString::createWithFormat("fish%02d_%02d.png",levelFish);
 
     CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(frameName->getCString()); 
     if(frame){
         _spriteFish->setDisplayFrame(frame); 
-        CCLog("levelFish is %d", levelFish);
+        //CCLog("levelFish is %d", levelFish);
     }
 
 	CCArray *frames = CCArray::create();

@@ -18,7 +18,7 @@ Cannon* Cannon::initCannon()
 	if(_cannon && _cannon->createCannon()){
 		
 		//
-		CCLog("canon is inited");
+		//CCLog("canon is inited");
 		return _cannon;
 	}else{
 		delete _cannon;
@@ -61,7 +61,7 @@ void Cannon::addCannon(CCObject* pSender)
 	if(levelCannon > 6){
 		levelCannon = 1;
 	}
-	CCLog("levelCannon id %d", levelCannon);
+	//CCLog("levelCannon id %d", levelCannon);
 	//CCSize  size = CCDirector::sharedDirector()->getWinSize();
 	CCString *frameName = CCString::createWithFormat("actor_cannon1_%d1.png", levelCannon);
 	CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(frameName->getCString());

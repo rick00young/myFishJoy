@@ -50,7 +50,7 @@ void FishNet::showFishNet(int level, CCPoint point)
     CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(frameName->getCString()); 
     if(frame){
         _netSprite->setDisplayFrame(frame); 
-        CCLog("levelNet is %d", levelNet);
+        //CCLog("levelNet is %d", levelNet);
     }
 
 	_netSprite->setPosition(point);
@@ -67,7 +67,7 @@ void FishNet::removeSelf()
 {
 	//CCLog("release fishnet");
     _netSprite->setVisible(false);
-    CCLog("visible is %d", _netSprite->isVisible());
+    //CCLog("visible is %d", _netSprite->isVisible());
     //_netSprite->runAction(CCFadeTo::create(0.0f, 1.0f));
 	//_netSprite->removeFromParentAndCleanup(true);
 	//this->getgameScene()->getFishNets()->removeObject(this);

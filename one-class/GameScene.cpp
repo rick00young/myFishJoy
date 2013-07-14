@@ -102,6 +102,7 @@ void::GameScene::initFrames()
     CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("fish3.plist");
     CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("fish4.plist");
     CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("cannon.plist");
+    CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("8goldItem.plist");
 }
 
 void GameScene::initBackground()
@@ -177,11 +178,25 @@ void GameScene::initRollNum()
     //this->setBatchNode1(CCSpriteBatchNode::createWithTexture(texture));
     this->setBatchNode5(CCSpriteBatchNode::createWithTexture(pTex));
     this->addChild(m_pBatchNode5, 100);
-
+    score = 3000;//默认是3000个金币
     rollNumGroup = RollNumGroup::initRollGroup(m_pBatchNode5, 6);
     rollNumGroup->setPosition(ccp(170, 10));
-    rollNumGroup->setValue(6666);
+    rollNumGroup->setValue(score);
     //rollNumGroup->setValue(7);
+
+    //coins
+    CCTexture2D *texture = CCTextureCache::sharedTextureCache()->addImage("8goldItem.png");
+    this->setBatchNode6(CCSpriteBatchNode::createWithTexture(texture));
+    this->addChild(m_pBatchNode6);
+
+    this->setCoins(CCArray::createWithCapacity(20));
+    m_pCoins->retain();
+    for(int i = 0;i < 20; i++){
+        Coin* coin = Coin::initCoin(m_pBatchNode6);
+        m_pCoins->addObject(coin);
+    }
+
+    //CCLog("Coins count is %d", m_pCoins->count());
 }
 
 void GameScene::initFishes(){
@@ -269,11 +284,12 @@ void GameScene::ccTouchesEnded(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEven
 	int level = cannon->getLevelCannon();
 	
     CCSetIterator it = pTouches->begin();
+    CCPoint temp_pt;
     while(it != pTouches->end() && isControl)
     {
         CCTouch *pTouch = (CCTouch *)*it;
         CCPoint pt = CCDirector::sharedDirector()->convertToGL(pTouch->getLocationInView());
-        
+        temp_pt = pt;
         for(int j = 0;j < (int)(this->getBullets()->count()); j++){
              Bullet *_bullet = (Bullet *)this->getBullets()->objectAtIndex(j);
             //CCLog("shoot");
@@ -286,8 +302,20 @@ void GameScene::ccTouchesEnded(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEven
                   
         }
 
+
+
         break;
     }
+    //test
+     for(int m = 0; m < (int)(m_pCoins->count()); m++){
+            //CCLog("show coin_______________________");
+            Coin* _coin = (Coin *)this->getCoins()->objectAtIndex(m);
+            if(!(_coin->getSpriteCoin()->isVisible())){
+                _coin->showCoin(temp_pt, 1);
+                CCLog("show coin");
+                break;
+            }
+     }
 
 	isControl = false;
 	
@@ -295,18 +323,18 @@ void GameScene::ccTouchesEnded(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEven
 
 void GameScene::showFishNet(CCPoint point)
 {
-	CCLog("show fish net");
+	//CCLog("show fish net");
 	int level = cannon->getLevelCannon();
 	//fishNet = FishNet::initFishNet(level, this, m_pBatchNode3);
 	//fishNet->showFishNet(point);
 
     for(int j = 0;j < (int)(this->getFishNets()->count()); j++){
             FishNet *_fishNet = (FishNet *)this->getFishNets()->objectAtIndex(j);
-             CCLog("net");
+             //CCLog("net");
             if(!(_fishNet->getSpriteFishNet()->isVisible())){
                 _fishNet->getSpriteFishNet()->setVisible(true);
                 _fishNet->showFishNet(level, point);
-                CCLog("shoot");
+                //CCLog("shoot");
                 break;
              }
                   
@@ -344,7 +372,7 @@ void GameScene::addFish()
                  //if(FishCount > 5) return;
                  _fish->getSpriteFish()->setVisible(true);
                  _fish->changeFish(type);
-                 CCLog("_fish->getSpriteFish()->isVisible() %d",FishCount);
+                 //CCLog("_fish->getSpriteFish()->isVisible() %d",FishCount);
                 // FishCount--;
                  break;
              }

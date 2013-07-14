@@ -29,6 +29,7 @@ public:
     CC_SYNTHESIZE(cocos2d::CCSpriteBatchNode *, m_pBatchNode4, BatchNode4);
 
     CC_SYNTHESIZE(cocos2d::CCSpriteBatchNode *, m_pBatchNode5, BatchNode5);//¼Æ·ÖÆ÷
+    CC_SYNTHESIZE(cocos2d::CCSpriteBatchNode *, m_pBatchNode6, BatchNode6);//coins
 
 	CC_SYNTHESIZE(cocos2d::CCArray *, m_pFishes, Fishes);
     CC_SYNTHESIZE(cocos2d::CCArray *, m_pFishes2, Fishes2);
@@ -37,6 +38,7 @@ public:
 
     CC_SYNTHESIZE(cocos2d::CCArray *, m_pBullets, Bullets);
 	CC_SYNTHESIZE(cocos2d::CCArray *, m_pFishNets, FishNets);
+    CC_SYNTHESIZE(cocos2d::CCArray *, m_pCoins, Coins);
 
 	virtual void ccTouchesBegan(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent);
     virtual void ccTouchesEnded(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent);
@@ -54,6 +56,7 @@ private:
 	Bullet *bullet;
 	FishNet *fishNet;
 	Fish *fish;
+    int score;
     RollNumGroup* rollNumGroup;
 	void initFrames();
     void initBackground();
