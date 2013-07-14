@@ -219,16 +219,8 @@ void Coin::showCoin(CCPoint pt, int level)
     levelCoin = level;
     _spriteCoin->setPosition(pt);
     _spriteCoin->setVisible(true);
-    //_spriteCoin->stopAllActions();
-    /*
-    CCString *frameName = CCString::createWithFormat("num_%02d.png",levelCoin);
-    
-    CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(frameName->getCString()); 
-    if(frame){
-        _spriteCoin->setDisplayFrame(frame); 
-        CCLog("levelCoin is %d", levelCoin);
-    }
-    */
+    _spriteCoin->stopAllActions();
+
     CCArray *frames = CCArray::createWithCapacity(10);
     for(int i = 1; i <= 9; i++)
     {
