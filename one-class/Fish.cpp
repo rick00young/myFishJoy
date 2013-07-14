@@ -66,8 +66,17 @@ bool Fish::createFish(int level, GameScene *gameScene, cocos2d::CCSpriteBatchNod
 void Fish::changeFish(int level)
 {
 	//动画创建
-    
+    _spriteFish->stopAllActions();
     levelFish = level;
+    CCLog("levelFish is %d", levelFish);
+    CCString *frameName = CCString::createWithFormat("fish%02d_%02d.png",levelFish);
+
+    CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(frameName->getCString()); 
+    if(frame){
+        _spriteFish->setDisplayFrame(frame); 
+        CCLog("levelFish is %d", levelFish);
+    }
+
 	CCArray *frames = CCArray::create();
     for(int i = 1; i <= 16; i++)
     {
@@ -78,11 +87,11 @@ void Fish::changeFish(int level)
     }
 	//执行动画
 	CCAnimation *animation = CCAnimation::createWithSpriteFrames(frames, 0.2f);
-    animation->setRestoreOriginalFrame(false);
+    animation->setRestoreOriginalFrame(true);
     CCAnimate *animate = CCAnimate::create(animation);
     CCAction *swing = CCRepeatForever::create(animate);
     if(swing){
-        CCLog("pppppppppppppppppppppppppppppp");
+        //CCLog("pppppppppppppppppppppppppppppp");
     }
 
 	if(_spriteFish){//规避指针错误
@@ -94,8 +103,8 @@ void Fish::changeFish(int level)
 
 void Fish::runWithPath()
 {
-	//this->runWithLine();
-	this->runFromLeftToRight();
+	this->runWithLine();
+	//this->runFromLeftToRight();
 }
 
 void Fish::runWithLine()

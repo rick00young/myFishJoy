@@ -85,6 +85,7 @@ bool GameScene::init()
 		this->initBackground();
 		this->initFishes();
         this->initCannon();
+        this->initRollNum();
 
 		this->schedule(schedule_selector(GameScene::updateFish), 1.0f);//¸üÐÂÓã
         bRet = true;
@@ -167,13 +168,26 @@ void GameScene::initCannon()
 
     CCLog("the ccarray bullet count is %d", this->getBullets()->count());
     CCLog("the ccarray fishnet count is %d", this->getFishNets()->count());
-	
+}
+
+void GameScene::initRollNum()
+{
+    CCTexture2D *pTex = CCTextureCache::sharedTextureCache()->addImage("number.png");
+   
+    //this->setBatchNode1(CCSpriteBatchNode::createWithTexture(texture));
+    this->setBatchNode5(CCSpriteBatchNode::createWithTexture(pTex));
+    this->addChild(m_pBatchNode5, 100);
+
+    rollNumGroup = RollNumGroup::initRollGroup(m_pBatchNode5, 6);
+    rollNumGroup->setPosition(ccp(170, 10));
+    rollNumGroup->setValue(6666);
+    //rollNumGroup->setValue(7);
 }
 
 void GameScene::initFishes(){
 
-	this->setFishes(CCArray::createWithCapacity(MAX_FISH_COUNT));    
-	m_pFishes->retain();
+    this->setFishes(CCArray::createWithCapacity(MAX_FISH_COUNT));    
+    m_pFishes->retain();
 
     this->setFishes2(CCArray::createWithCapacity(MAX_FISH_COUNT));    
 	m_pFishes2->retain();
@@ -251,7 +265,7 @@ void GameScene::ccTouchesBegan(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEven
 
 void GameScene::ccTouchesEnded(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent)
 {	
-
+    rollNumGroup->setValue(rollNumGroup->getValue() - 2);
 	int level = cannon->getLevelCannon();
 	
     CCSetIterator it = pTouches->begin();
@@ -326,11 +340,12 @@ void GameScene::addFish()
          for(int i = 0; i < (int)(this->getFishes()->count()); i++){
              Fish* _fish = (Fish *)this->getFishes()->objectAtIndex(i);
              if(!(_fish->getSpriteFish()->isVisible())){
-                 FishCount++;
-                 if(FishCount > 5) return;
+                 //FishCount++;
+                 //if(FishCount > 5) return;
                  _fish->getSpriteFish()->setVisible(true);
                  _fish->changeFish(type);
                  CCLog("_fish->getSpriteFish()->isVisible() %d",FishCount);
+                // FishCount--;
                  break;
              }
          }
@@ -380,11 +395,6 @@ void GameScene::update(float time)
 		//CCLog("Bullet");
 		Bullet *pBullet = (Bullet *)BulletObj;
 
-		if(!pBullet && pBullet->getCaught()){
-			continue;
-		}
-
-		bool caught = false;
 		CCARRAY_FOREACH(m_pFishes, FishObj){
 			//CCLog("Fish");
 			Fish *pFish = (Fish *)FishObj;
@@ -392,12 +402,6 @@ void GameScene::update(float time)
                 continue;
             }
 
-            if(pFish && pBullet && pFish->getSpriteFish()->boundingBox().containsPoint(pBullet->getSpriteBullet()->getPosition())){
-                CCLog("hit the fish");
-                pFish->setCaught(true);
-                pBullet->setCaught(true);
-                pFish->showCaught();
-            }
                 
 		}
 	}

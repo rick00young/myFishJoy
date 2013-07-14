@@ -8,6 +8,7 @@
 #include "Fish.h"
 #include "Bullet.h"
 #include "FishNet.h"
+#include "RollNum.h"
 //#include "Box2D/Box2D.h"
 
 #include "SimpleAudioEngine.h"
@@ -26,6 +27,8 @@ public:
     CC_SYNTHESIZE(cocos2d::CCSpriteBatchNode *, m_pBatchNode2, BatchNode2);
     CC_SYNTHESIZE(cocos2d::CCSpriteBatchNode *, m_pBatchNode3, BatchNode3);
     CC_SYNTHESIZE(cocos2d::CCSpriteBatchNode *, m_pBatchNode4, BatchNode4);
+
+    CC_SYNTHESIZE(cocos2d::CCSpriteBatchNode *, m_pBatchNode5, BatchNode5);//¼Æ·ÖÆ÷
 
 	CC_SYNTHESIZE(cocos2d::CCArray *, m_pFishes, Fishes);
     CC_SYNTHESIZE(cocos2d::CCArray *, m_pFishes2, Fishes2);
@@ -51,9 +54,11 @@ private:
 	Bullet *bullet;
 	FishNet *fishNet;
 	Fish *fish;
+    RollNumGroup* rollNumGroup;
 	void initFrames();
     void initBackground();
     void initCannon();
+    void initRollNum();
 	void initFishes();
 	void addFish();
 	void updateFish(float dt);
