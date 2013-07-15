@@ -1,106 +1,128 @@
 #include "Cannon.h"
+
 using namespace cocos2d;
 
-Cannon::Cannon(float _ratio)
+Cannon::~Cannon()
 {
-	//cannonLevel = level;
-	ratio = _ratio;
-	CCLog("ratio is %f", ratio);
+	CCLog("cannon quit");
 }
 
-
-Cannon::~Cannon(void)
+Cannon::Cannon()
 {
-
+	//CCLog("cannon quit");
 }
 
-void Cannon::onEnter(void)
+Cannon* Cannon::initCannon()
 {
-	//this->setTouchEnabled(true);
-	cannon = CCSprite::createWithSpriteFrameName("actor_cannon1_11.png");
-	CCSize size = CCDirector::sharedDirector()->getWinSize();
-	if(cannon){
-		//this->setPosition(ccp(size.width/2 + 8,20));
-		//cannon->setScale(ratio);
-		//this->addChild(cannon,10);
-		//CCLog("okkkkkkkk");
+	Cannon* _cannon = new Cannon();
+	if(_cannon && _cannon->createCannon()){
+		
+		//
+		//CCLog("canon is inited");
+		return _cannon;
 	}else{
-		//CCLog("nooooooo");
+		delete _cannon;
+		return NULL;
 	}
-
 }
 
-void Cannon::setConnonLevel(int level)
+bool Cannon::createCannon()
 {
-	cannonLevel = level;
-	if(cannonLevel < 1){
-		cannonLevel = 1;
-	}
+	CCSize  size = CCDirector::sharedDirector()->getWinSize();
 
-	if(cannonLevel > 6){
-		cannonLevel = 6;
-	}
+	ratio = size.width / 1024;//´óÐ¡±ÈÀý
+	levelCannon = 1;
+	_sprite = CCSprite::createWithSpriteFrameName("actor_cannon1_11.png");
+	_sprite->setScale(ratio);
+	this->addChild(_sprite);
+
+	//CCMoveTo *moveto = CCMoveTo::create(1.0f, ccp(size.width, size.height));
+	//_sprite->runAction(moveto);
+
+	CCMenuItemImage *addLevel = CCMenuItemImage::create("addA.png", "addB.png", this, menu_selector(Cannon::addCannon));
+	
+	addLevel->setPosition(ccp(30, -10));
+	CCMenuItemImage *reduceLevel = CCMenuItemImage::create("reduceA.png", "reduceB.png", this, menu_selector(Cannon::reduceCannon));
+	reduceLevel->setPosition(ccp(-30, -10));
+
+	CCMenu *menuLevel = CCMenu::create(addLevel,reduceLevel, NULL);
+	
+	menuLevel->setPosition(CCPointZero);
+	this->addChild(menuLevel, 102);
+
+	return true;
 }
 
-void Cannon::setRotation(float rotation)
+void Cannon::addCannon(CCObject* pSender)
 {
-	cannon->setRotation(rotation);
+	//CCLog("addCannon");
+
+	levelCannon++;
+	if(levelCannon > 6){
+		levelCannon = 1;
+	}
+	//CCLog("levelCannon id %d", levelCannon);
+	//CCSize  size = CCDirector::sharedDirector()->getWinSize();
+	CCString *frameName = CCString::createWithFormat("actor_cannon1_%d1.png", levelCannon);
+	CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(frameName->getCString());
+
+	CCScaleTo *scaleto = CCScaleTo::create(0.2f, 0.4f);
+	CCScaleTo *scaleto_back = CCScaleTo::create(0.2f, ratio);
+	CCFiniteTimeAction *sequence = CCSequence::create(scaleto, scaleto_back, NULL);
+	_sprite->runAction(sequence);
+
+	if(frame){
+		_sprite->setDisplayFrame(frame);
+	}
 }
+
+void Cannon::reduceCannon(CCObject* pSender)
+{
+	//CCLog("reduceCannon");
+
+	levelCannon--;
+	
+	if(levelCannon < 1){
+		levelCannon = 6;
+	}
+	//CCLog("levelCannon id %d", levelCannon);
+	//CCSize  size = CCDirector::sharedDirector()->getWinSize();
+	CCString *frameName = CCString::createWithFormat("actor_cannon1_%d1.png", levelCannon);
+	CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(frameName->getCString());
+
+	CCScaleTo *scaleto = CCScaleTo::create(0.2f, 0.4f);
+	CCScaleTo *scaleto_back = CCScaleTo::create(0.2f, ratio);
+	CCFiniteTimeAction *sequence = CCSequence::create(scaleto, scaleto_back, NULL);
+	_sprite->runAction(sequence);
+
+	if(frame){
+		_sprite->setDisplayFrame(frame);
+	}
+}
+
 
 void Cannon::rotateToPoint(cocos2d::CCPoint ptTo)
 {
-    CCPoint ptFrom = cannon->getPosition();
+    CCPoint ptFrom = this->getPosition();
     float angle = atan2f(ptTo.y - ptFrom.y, ptTo.x - ptFrom.x) / M_PI * 180.0f;
-    cannon->setRotation(90.0f - angle);
+    _sprite->setRotation(90.0f - angle);
     //this->setDirection(ptTo);
 }
 
-CCPoint Cannon::getCannonPosition(void)
+float Cannon::getAngle()
 {
-	return cannon->getPosition();
+	return _sprite->getRotation();
 }
 
-void Cannon::addLevel(int level)
+void Cannon::shoot()
 {
-	//CCLog("addLevel");
-	cannonLevel = level;
-
-	CCString *frameName = CCString::createWithFormat("actor_cannon1_%d1.png", cannonLevel);
-	CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(frameName->getCString());
-	
-	
-
-	CCScaleTo  *scaleto = CCScaleTo ::create(0.5f, 0.06f);
-	CCBlink *blink =  CCBlink::create(1.0f, 5);
-	CCFiniteTimeAction *sequence = CCSequence::create(scaleto, blink, NULL);
-	cannon->runAction(sequence);
-
-	//this->setVisible(false);
-	//CCLog("scaleto is %f", this->getScale());
-	if(frame){
-		cannon->setDisplayFrame(frame);
-		
-		//cannon->setScale(0.02);
-		//cannon->setScale(ratio);
-		//CCLog("ok");
-	}else{
-		//CCLog("no");
-	}
+	//bullet = Bullet::initBullet();
+	//if(bullet){
+		//CCLog("shoot");
+	//}
 }
 
-void Cannon::reduceLevel(int level)
+int Cannon::getLevelCannon()
 {
-	//CCLog("reduceLevel");
-	cannonLevel = level;
-	CCString *frameName = CCString::createWithFormat("actor_cannon1_%d1.png", cannonLevel);
-	CCSpriteFrame *frame=CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(frameName->getCString());
-	//CCScaleBy *scaleTo = CCScaleBy::create(0.5, 0.2, 0.2);
-	//CCScaleTo *scaleBack = scaleTo->reverse();
-	if(frame){
-		cannon->setDisplayFrame(frame);
-		//cannon->runAction(CCSequence::create(scaleTo, NULL));
-		CCLog("ok");
-	}else{
-		CCLog("no");
-	}
+	return levelCannon;
 }

@@ -2,7 +2,7 @@
 #include "CCEGLView.h"
 #include "AppDelegate.h"
 #include "HelloWorldScene.h"
-#include "GameLayer.h"
+#include "GameScene.h"
 #include "SimpleAudioEngine.h"
 
 using namespace CocosDenshion;
@@ -32,7 +32,7 @@ bool AppDelegate::applicationDidFinishLaunching()
 
     // create a scene. it's an autorelease object
     //CCScene *pScene = HelloWorld::scene();
-	CCScene *pScene = GameLayer::scene();
+	CCScene *pScene = GameScene::scene();
 
     // run
     pDirector->runWithScene(pScene);

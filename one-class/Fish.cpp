@@ -65,6 +65,7 @@ bool Fish::createFish(int level, GameScene *gameScene, cocos2d::CCSpriteBatchNod
 
 void Fish::changeFish(int level)
 {
+    this->setCaught(false);
 	//动画创建
     _spriteFish->stopAllActions();
     levelFish = level;
@@ -90,9 +91,7 @@ void Fish::changeFish(int level)
     animation->setRestoreOriginalFrame(true);
     CCAnimate *animate = CCAnimate::create(animation);
     CCAction *swing = CCRepeatForever::create(animate);
-    if(swing){
-        //CCLog("pppppppppppppppppppppppppppppp");
-    }
+
 
 	if(_spriteFish){//规避指针错误
 		_spriteFish->runAction(swing);
@@ -103,8 +102,8 @@ void Fish::changeFish(int level)
 
 void Fish::runWithPath()
 {
-	this->runWithLine();
-	//this->runFromLeftToRight();
+	//this->runWithLine();
+	this->runFromLeftToRight();
 }
 
 void Fish::runWithLine()
@@ -221,7 +220,7 @@ void Fish::showCaught()
         if(pFrame)
             frames->addObject(pFrame);
     }
-    CCAnimation *animation = CCAnimation::createWithSpriteFrames(frames, 0.3f);
+    CCAnimation *animation = CCAnimation::createWithSpriteFrames(frames, 0.2f);
     CCAnimate *animate = CCAnimate::create(animation);
     CCFiniteTimeAction *callFunc = CCCallFunc::create(this, callfunc_selector(Fish::removeSelf));
     CCFiniteTimeAction *sequence = CCSequence::create(animate, callFunc, NULL);
@@ -232,9 +231,4 @@ void Fish::showCaught()
 void Fish::removeSelf()
 {
     _spriteFish->setVisible(false);
-	//CCLog("callback fish remveself");
-	//_spriteFish->removeFromParentAndCleanup(true);
-	//this->getgameScene()->getFishes()->removeObject(this);
-	
-	//this->autorelease();
 }

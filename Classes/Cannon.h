@@ -1,25 +1,27 @@
-#ifndef FishingJoy_Cannon_h
-#define FishingJoy_Cannon_h
-#include "cocos2d.h"
+#ifndef __Cannon_H__
+#define __Cannon_H__
 
-class Cannon : public cocos2d::CCSprite
+#include "cocos2d.h"
+#include "Bullet.h"
+//#include "Box2D/Box2D.h"
+#define CANNON_PADDING 20.0f
+class Cannon : public cocos2d::CCNode
 {
 public:
-	Cannon(void);
-	Cannon(float);
-	~Cannon(void);
-	virtual void onEnter();
-	int cannonLevel;
+	~Cannon();
+	Cannon();
+	static Cannon* initCannon();
+	bool createCannon();
+	cocos2d::CCSprite * _sprite;
 	float ratio;
-	void setConnonLevel(int level);
-	float rotation;
-	cocos2d::CCSprite *cannon;
-	void setRotation(float);
-	void rotateToPoint(cocos2d::CCPoint pt);
-	cocos2d::CCPoint getCannonPosition(void);
-	void addLevel(int level);
-	void reduceLevel(int level);
-
-	CREATE_FUNC(Cannon);
+	int levelCannon;
+	void addCannon(cocos2d::CCObject *sender);
+	void reduceCannon(cocos2d::CCObject *sender);
+	void rotateToPoint(cocos2d::CCPoint ptTo);
+	float getAngle();
+	int getLevelCannon();
+	Bullet *bullet;
+	void shoot();
 };
-#endif
+
+#endif  // __HELLOWORLD_SCENE_H__
